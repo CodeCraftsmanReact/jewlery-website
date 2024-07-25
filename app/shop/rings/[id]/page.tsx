@@ -19,13 +19,7 @@ import {
   CartEntry as ICartEntry,
 } from "use-shopping-cart/core";
 
-interface PageProps {
-  id: string;
-  product: Product;
-  addItem: CartActions["addItem"];
-}
-
-export default function ProductPage({}: PageProps) {
+export default function ProductPage() {
   const { addItem } = useShoppingCart();
   const product = {
     id: "prod_NWjs8kKbJWmuuc",
