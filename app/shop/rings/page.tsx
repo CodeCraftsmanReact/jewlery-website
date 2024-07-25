@@ -1,10 +1,12 @@
+"use client";
 import { Skeleton } from "@/components/ui/skeleton";
-import Image from "next/image";
 import product1 from "@/public/products/product-image-1319728241.webp";
 import product2 from "@/public/products/product-image-1319728242.webp";
 import product3 from "@/public/products/product-image-1769031444.webp";
-import Link from "next/link";
 import Product from "@/components/Product";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 export default function RingPage() {
   const productSkeleton = Array.apply(null, Array(16)).map(function () {});
@@ -171,12 +173,24 @@ export default function RingPage() {
       url: null,
     },
   ];
+  const container = useRef<HTMLElement | any>();
+  useGSAP(
+    () => {
+      var tl = gsap.timeline({ defaults: { autoAlpha: 1, ease: "back" } });
+      tl.from(".product", { opacity: 0 });
+      tl.to(".product", { stagger: 0.3, duration: 2 });
+    },
+    { scope: container }
+  );
   return (
     <div className="container p-16 md:pt-0">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-4">
         Rings
       </h1>
-      <div className="grid grid-cols-1 md:grids-col-3 lg:grid-cols-4 gap-6 md:gap-9 lg:gap-12 place-items-center">
+      <div
+        ref={container}
+        className="grid grid-cols-1 md:grids-col-3 lg:grid-cols-4 gap-6 md:gap-9 lg:gap-12 place-items-center"
+      >
         {products.length === 0
           ? productSkeleton.map((product, index) => (
               <div key={index} className="flex flex-col space-y-3">

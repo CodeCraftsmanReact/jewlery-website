@@ -189,7 +189,7 @@ const Navigation = () => {
 
                   <div
                     className={`absolute ${
-                      cartCount! > 0 ? "scale-100" : "scale-0"
+                      cartCount > 0 ? "scale-100" : "scale-0"
                     } animate-scale -right-1 -top-1 rounded-full bg-foreground text-background w-5 h-5 flex justify-center items-center transition-all duration-200`}
                   >
                     {cartCount}
@@ -322,7 +322,7 @@ const Navigation = () => {
                     <ShoppingCart />
                     <div
                       className={`absolute ${
-                        cartCount! > 0 ? "scale-100" : "scale-0"
+                        cartCount > 0 ? "scale-100" : "scale-0"
                       } animate-scale -right-1 -top-1 rounded-full bg-foreground text-background w-5 h-5 flex justify-center items-center transition-all duration-200`}
                     >
                       {cartCount}

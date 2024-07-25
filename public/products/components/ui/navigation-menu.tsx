@@ -84,9 +84,8 @@ const NavigationMenuLink = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Link>
 >(({ className, ...props }, ref) => {
   const router = useRouter();
-
   props.onClick = () => {
-    animatePageOut(props.href!, router);
+    animatePageOut(props.href, router);
   };
 
   return (
