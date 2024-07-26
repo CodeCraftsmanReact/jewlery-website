@@ -17,6 +17,7 @@ import AnimateHeight, { Height } from "react-animate-height";
 import { useShoppingCart } from "use-shopping-cart";
 import { CartEntry as ICartEntry } from "use-shopping-cart/core";
 import Image from "next/image";
+import { ModeToggle } from "@/components/ui/theme-toggle";
 
 const components = [
   {
@@ -49,34 +50,52 @@ const components = [
 function CartEntry({ entry }: { entry: ICartEntry }) {
   const { incrementItem, decrementItem, removeItem } = useShoppingCart();
   return (
-    <div className="flex items-center gap-3 p-3  w-[300px]">
-      {entry.images ? (
-        <Image
-          width={50}
-          height={50}
-          src={entry.images[0].src}
-          alt={"product image"}
-          className="rounded-full"
-        />
-      ) : null}
-      <div className="flex flex-col gap-2 w-full">
+    <div className="flex justify-between items-center gap-3 p-3  w-[300px]">
+      <div className="flex justify-center">
+        {entry.images ? (
+          <Image
+            width={75}
+            height={75}
+            src={entry.images[0].src}
+            alt={"product image"}
+            className="rounded-full my-auto"
+          />
+        ) : null}
+      </div>
+
+      <div className="flex flex-col  gap-2 w-full">
         <div>
-          <h3 className="text-sm">{entry.name}</h3>
-          <p className="flex">
-            {entry.quantity} x{" "}
-            {/* {formatCurrencyString({ value: entry.price, currency: 'USD' })} ={' '} */}
-            {entry.formattedValue}
-          </p>
+          <div className="text-sm flex justify-between">
+            <div>{entry.name}</div>
+            <div>
+              {entry.quantity} x {entry.formattedValue}
+            </div>
+          </div>
         </div>
-        <div className="flex justify-evenly">
-          <Button size="icon" onClick={() => incrementItem(entry.id)}>
-            <Plus />
-          </Button>
-          <Button size="icon" onClick={() => decrementItem(entry.id)}>
-            <Minus />
-          </Button>
-          <Button size="icon" onClick={() => removeItem(entry.id)}>
-            <Trash />
+        <div className="flex justify-between gap-1">
+          <div>
+            <Button
+              className="!h-6 rounded-r-none"
+              size="icon"
+              onClick={() => incrementItem(entry.id)}
+            >
+              <Plus className="w-4 h-4" />
+            </Button>
+            <Button
+              className="!h-6 rounded-l-none"
+              size="icon"
+              onClick={() => decrementItem(entry.id)}
+            >
+              <Minus className="w-4 h-4" />
+            </Button>
+          </div>
+
+          <Button
+            className="!h-6"
+            size="icon"
+            onClick={() => removeItem(entry.id)}
+          >
+            <Trash className="w-4 h-4" />
           </Button>
         </div>
       </div>
@@ -113,9 +132,9 @@ const Navigation = () => {
   const cartEntries = Object.values(cartDetails ?? {}).map((entry) => (
     <CartEntry key={entry.id} entry={entry} />
   ));
-
+  const total_items = Number(cartCount) || 0;
   return (
-    <div className="p-1">
+    <div className="">
       <div className="justify-between items-center hidden md:flex">
         <NavigationMenu>
           <NavigationMenuList>
@@ -186,15 +205,13 @@ const Navigation = () => {
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="relative">
                   <ShoppingCart />
-                  {cartCount && (
-                    <div
-                      className={`absolute ${
-                        cartCount > 0 ? "scale-100" : "scale-0"
-                      } animate-scale -right-1 -top-1 rounded-full bg-foreground text-background w-5 h-5 flex justify-center items-center transition-all duration-200`}
-                    >
-                      {cartCount}
-                    </div>
-                  )}
+                  <div
+                    className={`absolute ${
+                      total_items > 0 ? "scale-100" : "scale-0"
+                    } -right-1 -top-1 rounded-full bg-foreground text-background w-5 h-5 flex justify-center items-center transition-all duration-200`}
+                  >
+                    {total_items}
+                  </div>
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div
@@ -227,6 +244,7 @@ const Navigation = () => {
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
+              <ModeToggle />
             </NavigationMenuList>
           </NavigationMenu>
         </div>
@@ -258,7 +276,7 @@ const Navigation = () => {
                     Shop
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid gap-3 p-4  md:grid-cols-2  ">
+                    <ul className="grid gap-3 p-4  md:grid-cols-2">
                       {components.map((component) => (
                         <ListItem
                           key={component.title}
@@ -321,17 +339,16 @@ const Navigation = () => {
                 <NavigationMenuItem className="">
                   <NavigationMenuTrigger className="relative">
                     <ShoppingCart />
-                    {cartCount && (
-                      <div
-                        className={`absolute ${
-                          cartCount! > 0 ? "scale-100" : "scale-0"
-                        } animate-scale -right-1 -top-1 rounded-full bg-foreground text-background w-5 h-5 flex justify-center items-center transition-all duration-200`}
-                      >
-                        {cartCount}
-                      </div>
-                    )}
+
+                    <div
+                      className={`absolute ${
+                        total_items > 0 ? "scale-100" : "scale-0"
+                      } animate-scale -right-1 -top-1 rounded-full bg-foreground text-background w-5 h-5 flex justify-center items-center transition-all duration-200`}
+                    >
+                      {total_items}
+                    </div>
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent className="oogabooga">
+                  <NavigationMenuContent>
                     <div
                       className={`w-[300px] h-[300px] flex flex-col items-center relative ${
                         cartEntries.length === 0 && "justify-center"

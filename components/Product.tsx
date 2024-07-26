@@ -3,6 +3,7 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import React from "react";
 import { formatCurrencyString, useShoppingCart } from "use-shopping-cart";
+import TransitionLink from "./TransitionLink";
 
 const Product = ({
   product,
@@ -41,10 +42,10 @@ const Product = ({
       style={{ opacity: 0 }}
       className="product flex flex-col space-y-3 cursor-pointer"
     >
-      <div className="h-[250px] w-[250px] rounded-xl hover:scale-110 transition-all duration-200  ">
+      <div className="h-[150px] w-[150px] rounded-xl hover:scale-110 transition-all duration-200  ">
         <Image
           src={product.images[0]}
-          className="h-[250px] w-[250px] rounded-xl"
+          className="h-[150px] w-[150px] rounded-xl"
           alt={product.name}
         />
       </div>

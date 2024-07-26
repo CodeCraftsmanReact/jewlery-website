@@ -9,7 +9,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
 export default function RingPage() {
-  const productSkeleton = Array.apply(null, Array(16)).map(function () {});
+  const productSkeleton = Array.apply(null, Array(12)).map(function () {});
   // let products = [];
   let products = [
     {
@@ -189,15 +189,15 @@ export default function RingPage() {
       </h1>
       <div
         ref={container}
-        className="grid grid-cols-1 md:grids-col-3 lg:grid-cols-4 gap-6 md:gap-9 lg:gap-12 place-items-center"
+        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 md:gap-9 lg:gap-12 place-items-center"
       >
         {products.length === 0
           ? productSkeleton.map((product, index) => (
               <div key={index} className="flex flex-col space-y-3">
-                <Skeleton className="h-[250px] w-[250px] rounded-xl" />
+                <Skeleton className="h-[150px] w-[150px] rounded-xl" />
                 <div className="space-y-2">
-                  <Skeleton className="h-4 w-[250px]" />
-                  <Skeleton className="h-4 w-[200px]" />
+                  <Skeleton className="h-4 w-[150px]" />
+                  <Skeleton className="h-4 w-[100px]" />
                 </div>
               </div>
             ))
