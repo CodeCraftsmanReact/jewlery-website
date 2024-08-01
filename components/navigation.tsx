@@ -11,13 +11,21 @@ import {
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { ShoppingCart, Menu, Trash, Plus, Minus } from "lucide-react";
+import {
+  ShoppingCart,
+  Menu,
+  Trash,
+  Plus,
+  Minus,
+  LoaderCircle,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import AnimateHeight, { Height } from "react-animate-height";
-import { useShoppingCart } from "use-shopping-cart";
+import { formatCurrencyString, useShoppingCart } from "use-shopping-cart";
 import { CartEntry as ICartEntry } from "use-shopping-cart/core";
 import Image from "next/image";
 import { ModeToggle } from "@/components/ui/theme-toggle";
+import { useRouter } from "next/navigation";
 
 const components = [
   {
@@ -49,14 +57,20 @@ const components = [
 
 function CartEntry({ entry }: { entry: ICartEntry }) {
   const { incrementItem, decrementItem, removeItem } = useShoppingCart();
+  const price = formatCurrencyString({
+    value: entry.default_price?.unit_amount,
+    currency: "USD",
+    language: "en-US",
+  });
+  console.log("entry ", entry);
   return (
-    <div className="flex justify-between items-center gap-3 p-3  w-[300px]">
+    <div className="flex justify-between items-center gap-3 p-3   w-[300px]">
       <div className="flex justify-center">
         {entry.images ? (
           <Image
             width={75}
             height={75}
-            src={entry.images[0].src}
+            src={entry.images[0]}
             alt={"product image"}
             className="rounded-full my-auto"
           />
@@ -67,8 +81,8 @@ function CartEntry({ entry }: { entry: ICartEntry }) {
         <div>
           <div className="text-sm flex justify-between">
             <div>{entry.name}</div>
-            <div>
-              {entry.quantity} x {entry.formattedValue}
+            <div className="whitespace-nowrap">
+              {entry.quantity} x {price}
             </div>
           </div>
         </div>
@@ -105,21 +119,27 @@ function CartEntry({ entry }: { entry: ICartEntry }) {
 
 const Navigation = () => {
   const [height, setHeight] = useState<Height>(0);
-  const [status, setStatus] = useState("idle");
-  const { cartCount, cartDetails, clearCart, redirectToCheckout } =
-    useShoppingCart();
+  const [status, setStatus] = useState("");
+  const router = useRouter();
+  const { cartCount, cartDetails, clearCart } = useShoppingCart();
 
   async function handleClick(event: any) {
     event.preventDefault();
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ line_items: cartDetails }),
+    };
 
     if (cartCount && cartCount > 0) {
       setStatus("idle");
       try {
-        const result = await redirectToCheckout();
-        if (result?.error) {
-          console.error(result);
-          setStatus("redirect-error");
-        }
+        fetch("/api/get-checkout-link", requestOptions)
+          .then((response) => response.json())
+          .then((data: any) => {
+            console.log(data);
+            router.push(data.url);
+          });
       } catch (error) {
         console.error(error);
         setStatus("redirect-error");
@@ -215,17 +235,22 @@ const Navigation = () => {
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div
-                    className={`w-[300px] h-[300px] flex flex-col items-center relative ${
+                    className={`w-[300px] min-h-[300px] flex flex-col items-center relative pb-16 overflow-x-hidden overflow-y-auto ${
                       cartEntries.length === 0 && "justify-center"
                     } `}
                   >
                     {cartEntries.length === 0 ? <p>Cart is empty.</p> : null}
                     {cartEntries}
                     {cartEntries.length > 0 ? (
-                      <div className="flex gap-4 absolute bottom-2">
+                      <div className="flex gap-2 my-4 absolute bottom-0">
                         <Button onClick={() => clearCart()}>Clear cart</Button>
 
-                        <Button onClick={handleClick}>Checkout</Button>
+                        <Button onClick={(e) => handleClick(e)}>
+                          Checkout{" "}
+                          {status === "idle" && (
+                            <LoaderCircle className="ml-2 animate-spin" />
+                          )}
+                        </Button>
                       </div>
                     ) : null}
                   </div>
@@ -350,7 +375,7 @@ const Navigation = () => {
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div
-                      className={`w-[300px] h-[300px] flex flex-col items-center relative ${
+                      className={`w-[300px] min-h-[300px] flex flex-col items-center relative ${
                         cartEntries.length === 0 && "justify-center"
                       } `}
                     >
@@ -362,7 +387,12 @@ const Navigation = () => {
                             Clear cart
                           </Button>
 
-                          <Button onClick={handleClick}>Checkout</Button>
+                          <Button onClick={handleClick}>
+                            Checkout
+                            {status === "idle" && (
+                              <LoaderCircle className="ml-2 animate-spin" />
+                            )}
+                          </Button>
                         </div>
                       ) : null}
                     </div>
