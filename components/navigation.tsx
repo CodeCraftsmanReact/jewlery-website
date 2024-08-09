@@ -262,13 +262,6 @@ const Navigation = () => {
         <div>
           <NavigationMenu>
             <NavigationMenuList>
-              <NavigationMenuItem>
-                <Link href="/contact-us" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    My Account
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
               <ModeToggle />
             </NavigationMenuList>
           </NavigationMenu>
@@ -350,13 +343,7 @@ const Navigation = () => {
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    My Account
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
+
               <NavigationMenu
                 id="viewport"
                 className="[&>*:nth-child(2)]:-translate-x-[114px]"

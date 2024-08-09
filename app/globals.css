@@ -57,3 +57,26 @@
     @apply bg-background text-foreground;
   }
 }
+.example-container .drag-area {
+  opacity: 0.2;
+  background: white;
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 30px;
+  top: calc(50% - 150px);
+  left: calc(50% - 150px);
+}
+.example-container div {
+  border-radius: 30px;
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  top: calc(50% - 150px / 2);
+  left: calc(50% - 150px / 2);
+}
+
+.example-container-motion-path {
+  width: 10vw;
+  height: 10vh;
+}

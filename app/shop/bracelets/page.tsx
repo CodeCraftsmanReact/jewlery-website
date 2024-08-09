@@ -2,7 +2,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import Product from "@/components/Product";
 import { useEffect, useRef, useState } from "react";
-
 import gsap from "gsap";
 import useSWR from "swr";
 import type { ProductItem } from "@/components/Product";
@@ -20,14 +19,21 @@ export default function Page() {
   useEffect(() => {
     const products = container.current.querySelectorAll(".product");
     gsap.to(products, {
-      opacity: 1,
-      stagger: 0.5,
+      duration: 1,
+      scale: 1,
+      y: 60,
+      ease: "power2.inOut",
+      stagger: {
+        grid: [2, 6],
+        from: "center",
+        amount: 1.5,
+      },
     });
   }, [products]);
   return (
     <div className="container p-16 md:pt-0">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-4">
-        Rings
+        Bracelets
       </h1>
       <div
         ref={container}
@@ -46,7 +52,14 @@ export default function Page() {
             </div>
           ))}
         {products?.map((product) => {
-          return <Product key={product.id} product={product} />;
+          return (
+            <Product
+              opacity={1}
+              scale={0.1}
+              key={product.id}
+              product={product}
+            />
+          );
         })}
       </div>
     </div>

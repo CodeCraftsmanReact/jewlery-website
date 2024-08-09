@@ -31,7 +31,7 @@ export interface ProductItem {
   url: null;
 }
 
-const Product = ({ product }: any) => {
+const Product = ({ product, opacity, scale }: any) => {
   const price = formatCurrencyString({
     value: product.default_price?.unit_amount,
     currency: "USD",
@@ -43,7 +43,7 @@ const Product = ({ product }: any) => {
     <Link
       href={`/shop/rings/${product?.id}`}
       key={product?.id}
-      style={{ opacity: 0 }}
+      style={{ opacity: opacity ? opacity : 0, scale: scale ? scale : 1 }}
       className="product flex flex-col space-y-3 max-w-[180px] cursor-pointer"
     >
       <div className="h-[150px] w-[150px] rounded-xl hover:scale-110 transition-all duration-200  ">

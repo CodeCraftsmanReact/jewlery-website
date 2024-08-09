@@ -8,7 +8,6 @@ export async function POST(request: Request) {
       price: item.default_price.id,
       quantity: item.quantity,
     }));
-    console.log(items);
     const productInfo = await stripe.paymentLinks.create({
       line_items: items,
     });
