@@ -119,6 +119,8 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
   }
 );
 
+Stepper.displayName = "Stepper";
+
 Stepper.defaultProps = {
   size: "md",
   orientation: "horizontal",
